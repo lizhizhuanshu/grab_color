@@ -42,7 +42,7 @@ export class ImageCanvas{
     public mouseMove(x:number,y:number){
         let event = new MouseEvent("mousemove",{
             clientX:this.canvas.offsetLeft+this.mouseLastX+x,
-            clientY:110+this.mouseLastY+y,
+            clientY:this.canvas.offsetTop+this.mouseLastY+y,
         });
         this.canvas.dispatchEvent(event);
     }
