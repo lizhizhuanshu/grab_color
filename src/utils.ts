@@ -42,6 +42,22 @@ export function buildAutoluaCompareFeature( list: CoordColor[]){
     return arr.join(",");
 }
 
+export function buildAutoluaFindFeature(list :CoordColor[]){
+    if(list.length===0){
+        return "";
+    }
+    let ox = list[0].x;
+    let oy = list[0].y;
+
+    let arr:string[]=Array();
+    for (let index = 1; index < list.length; index++) {
+        const element = list[index];
+        let color = RGBToHexString(element.r,element.g,element.b);
+        arr.push(`${element.x-ox}|${element.y-oy}|${color}`);
+    }
+    return `0x${RGBToHexString(list[0].r,list[0].g,list[0].b)},"${arr.join(",")}"`;
+}
+
 
 export function orderScope(x:number,y:number,x1:number,y1:number){
     if(x>x1){

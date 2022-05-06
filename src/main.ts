@@ -3,7 +3,7 @@ import { CoordColorList } from "./coordColorList";
 import { ImageCanvas } from "./imageCanvas";
 import { MagnisyGlassesImp } from "./magnisyGlasses";
 import { ScopeListener } from "./scopeListener";
-import { buildAutoluaCompareFeature, setClipboard, showMessage } from "./utils";
+import { buildAutoluaCompareFeature, buildAutoluaFindFeature, setClipboard, showMessage } from "./utils";
 
 
 let imageCanvas = new ImageCanvas();
@@ -26,6 +26,8 @@ document.onkeydown=(e)=>{
         imageCanvas.mouseMove(0,-1);
     }else if(e.code === "ArrowDown"){
         imageCanvas.mouseMove(0,1);
+    }else if(e.code === "Enter"){
+        imageCanvas.featureSelect()
     }
 }
 
@@ -47,3 +49,9 @@ builderFactory.addBuilder("AutoLua一般比色",()=>{
     });
 });
 
+builderFactory.addBuilder("AutoLua找色特征",()=>{
+    let feature = buildAutoluaFindFeature(coordColorList.getCoordColors());
+    setClipboard(feature).then(()=>{
+        showMessage(`找色特征已经复制到你的剪切板`);
+    });
+});

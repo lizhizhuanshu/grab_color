@@ -81,7 +81,7 @@ export class ImageCanvas{
         let img = new Image();
         img.onload = (e)=>{
             this.hasImage = true;
-            this.context.drawImage(img,0,0);
+            this.updateCanvasImage(0,0);
             this.saveMaxImageOffset();
             this.glasses?.show(this.canvas,this.mouseLastX,this.mouseLastY,
                 this.mouseLastX,this.mouseLastY,);
@@ -105,7 +105,7 @@ export class ImageCanvas{
             {
                 this.canvas.width = this.canvas.clientWidth;
                 this.canvas.height = this.canvas.clientHeight;
-                this.context.drawImage(this.image,0,0);
+                this.updateCanvasImage(0,0);
                 this.saveMaxImageOffset();
             }
         });
@@ -262,11 +262,7 @@ export class ImageCanvas{
                     this.onScopeEvent(e);
                 }
             }else{
-                if(this.mouseDownX === e.offsetX && this.mouseDownY === e.offsetY){   
-                    this.onFeatureSelectEvent(e); //don't move
-                }else{
-                    //nothing to do;
-                }
+                //nothing to do;
             }
             this.mouseButton = -1;
         }else if(this.mouseButton == 2){
@@ -292,16 +288,20 @@ export class ImageCanvas{
         }
     }
 
-    private onFeatureSelectEvent(e:MouseEvent){
+    private onFeatureSelectEvent(offsetX:number,offsetY:number){
         if(this.featureListener)
         {
-            let data = getColorData(this.context,e.offsetX,e.offsetY);
+            let data = getColorData(this.context,offsetX,offsetY);
             this.featureListener.onSelected(
-                this.imageOffsetX+e.offsetX,
-                this.imageOffsetY+e.offsetY,
+                this.imageOffsetX+offsetX,
+                this.imageOffsetY+offsetY,
                 data[0],data[1],data[2]
             );
         }
+    }
+
+    public featureSelect(){
+        this.onFeatureSelectEvent(this.mouseLastX,this.mouseLastY)
     }
 
     private onScopeEvent(e:MouseEvent){
